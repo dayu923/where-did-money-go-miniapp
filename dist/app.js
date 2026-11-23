@@ -486,6 +486,182 @@
     }
   }
 
+  function drawRoundRect(context, x, y, width, height, radius) {
+    context.beginPath();
+    context.moveTo(x + radius, y);
+    context.lineTo(x + width - radius, y);
+    context.quadraticCurveTo(x + width, y, x + width, y + radius);
+    context.lineTo(x + width, y + height - radius);
+    context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    context.lineTo(x + radius, y + height);
+    context.quadraticCurveTo(x, y + height, x, y + height - radius);
+    context.lineTo(x, y + radius);
+    context.quadraticCurveTo(x, y, x + radius, y);
+    context.closePath();
+    context.fill();
+  }
+
+  function createPromotionImage() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 900;
+    canvas.height = 1200;
+    const context = canvas.getContext('2d');
+    if (!context) return Promise.reject(new Error('当前环境无法生成笔记配图。'));
+
+    context.fillStyle = '#F1EFFF';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.fillStyle = '#E4E0FF';
+    context.beginPath();
+    context.arc(810, 108, 115, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = '#FFFFFF';
+    drawRoundRect(context, 46, 46, 808, 1108, 44);
+
+    function drawContent() {
+      context.fillStyle = '#4037BD';
+      context.font = '600 30px sans-serif';
+      context.fillText('轻松记账 · 看清钱去哪了', 96, 292);
+      context.font = '700 62px sans-serif';
+      context.fillText('钱去哪里了？', 96, 390);
+      context.fillText('记下来就知道了。', 96, 475);
+      context.fillStyle = '#827C9A';
+      context.font = '400 30px sans-serif';
+      context.fillText('把日常收支记下来，慢慢看懂自己的消费。', 96, 540);
+
+      const features = [
+        ['01', '随手记录', '手动记下每天的收入和支出'],
+        ['02', '清楚统计', '按月份和分类看看钱花在哪里'],
+        ['03', '温柔计划', '设置预算和存钱目标']
+      ];
+      features.forEach(function (item, index) {
+        const y = 620 + index * 142;
+        context.fillStyle = '#F6F4FF';
+        drawRoundRect(context, 92, y, 716, 112, 24);
+        context.fillStyle = '#4037BD';
+        context.font = '700 24px sans-serif';
+        context.fillText(item[0], 118, y + 43);
+        context.fillStyle = '#292443';
+        context.font = '700 30px sans-serif';
+        context.fillText(item[1], 180, y + 43);
+        context.fillStyle = '#827C9A';
+        context.font = '400 23px sans-serif';
+        context.fillText(item[2], 180, y + 79);
+      });
+      context.fillStyle = '#4037BD';
+      drawRoundRect(context, 92, 1060, 716, 58, 29);
+      context.fillStyle = '#FFFFFF';
+      context.font = '600 24px sans-serif';
+      context.textAlign = 'center';
+      context.fillText('不用绑卡，从今天的第一笔开始', 450, 1098);
+      context.textAlign = 'left';
+      return canvas.toDataURL('image/png');
+    }
+
+    return new Promise(function (resolve, reject) {
+      const logo = new Image();
+      let finished = false;
+      let logoTimer = null;
+      function finish(withLogo) {
+        if (finished) return;
+        finished = true;
+        window.clearTimeout(logoTimer);
+        try {
+          if (withLogo) context.drawImage(logo, 96, 92, 118, 118);
+          resolve(drawContent());
+        } catch (error) {
+          reject(new Error('产品介绍配图生成失败。'));
+        }
+      }
+      logo.onload = function () {
+        finish(true);
+      };
+      logo.onerror = function () { finish(false); };
+      logoTimer = window.setTimeout(function () { finish(false); }, 3000);
+      logo.src = './assets/brand/logo-mark.png';
+    });
+  }
+
+  async function publishPromotionNote() {
+    const button = $('#publish-note');
+    const status = $('#publish-note-status');
+    const miniTool = window.xhs && window.xhs.miniTool;
+    if (!miniTool || typeof miniTool.postNote !== 'function') {
+      status.textContent = '当前环境不支持发布笔记，请在小红书小工具容器中打开。';
+      showToast('当前环境暂不支持发布笔记。');
+      return;
+    }
+    if (button.disabled) return;
+    button.disabled = true;
+    status.textContent = '正在准备产品介绍配图…';
+    try {
+      const image = await createPromotionImage();
+      const result = await miniTool.postNote({
+        title: '钱去哪里了？记下来就知道了',
+        content: '把每天的收支记下来，看看钱都花在了哪里。用「钱去哪里了」记录日常收入和支出，按月份与分类查看统计，也可以设置预算和存钱目标。不用绑定银行卡，从今天的第一笔开始，慢慢养成记账习惯。',
+        pageType: 'photo_publish',
+        mediaInfo: { image_resources: [{ url: image }] }
+      });
+      if (!result || result.errMsg !== 'postNote:ok') throw new Error(result && result.errMsg || '小红书没有确认已打开笔记编辑器。');
+      status.textContent = '你已在小红书发布页点击发布。笔记的最终发布状态和审核结果，请在小红书查看。';
+      showToast('发布操作已提交，请在小红书查看笔记状态。');
+    } catch (error) {
+      const detail = error && (error.errMsg || error.message);
+      status.textContent = '发布流程未完成，或已由你取消。' + (detail ? ' 提示：' + detail : ' 如果你没有取消，请检查小红书容器后重试。');
+      showToast('发布流程未完成或已取消。');
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function initializeRewardFeature() {
+    const card = $('#reward-card');
+    if (document.documentElement.getAttribute('data-xhs-reward-enabled') !== 'true') return;
+
+    const xhs = window.xhs;
+    const miniTool = xhs && xhs.miniTool;
+    if (!miniTool || typeof miniTool.rewardAuthor !== 'function') return;
+
+    let launchOptions = xhs.launchOptions || null;
+    let buildVersion = LedgerStorage.getBuildVersion(launchOptions && launchOptions.miniToolEnv && launchOptions.miniToolEnv.buildVersion);
+    if (buildVersion === null && typeof miniTool.getLaunchOptions === 'function') {
+      try {
+        launchOptions = await miniTool.getLaunchOptions();
+        buildVersion = LedgerStorage.getBuildVersion(launchOptions && launchOptions.miniToolEnv && launchOptions.miniToolEnv.buildVersion);
+      } catch (error) {
+        return;
+      }
+    }
+
+    if (buildVersion === null || Math.floor(buildVersion / 1000) < 9533) return;
+    card.hidden = false;
+  }
+
+  async function requestAuthorReward() {
+    const button = $('#reward-author');
+    const status = $('#reward-status');
+    const miniTool = window.xhs && window.xhs.miniTool;
+    if (!miniTool || typeof miniTool.rewardAuthor !== 'function') {
+      status.textContent = '当前环境暂不支持赞赏，请在小红书 9.53.3 及以上客户端使用。';
+      return;
+    }
+    if (button.disabled) return;
+
+    button.disabled = true;
+    status.textContent = '正在打开小红书赞赏流程…';
+    try {
+      const result = await miniTool.rewardAuthor();
+      if (!result || result.errMsg !== 'rewardAuthor:ok') throw new Error(result && result.errMsg || '小红书未确认赞赏流程已打开。');
+      status.textContent = '赞赏流程已返回。本工具不会收到赞赏金额或支付状态，请以小红书客户端显示为准。';
+      showToast('赞赏流程已返回，请以小红书客户端显示为准。');
+    } catch (error) {
+      const detail = error && (error.errMsg || error.message);
+      status.textContent = '赞赏流程未完成，或已由你取消。' + (detail ? ' 提示：' + detail : ' 如果你没有取消，请稍后重试。');
+      showToast('赞赏流程未完成或已取消。');
+    } finally {
+      button.disabled = false;
+    }
+  }
+
   function bindEvents() {
     $$('[data-page]').forEach(function (button) {
       button.addEventListener('click', function (event) {
@@ -548,6 +724,8 @@
     $('#restore-json').addEventListener('click', restoreJSON);
     $('#clear-ledger').addEventListener('click', clearLedger);
     $('#voice-start').addEventListener('click', startVoice);
+    $('#publish-note').addEventListener('click', publishPromotionNote);
+    $('#reward-author').addEventListener('click', requestAuthorReward);
     $('#voice-parse').addEventListener('click', parseVoice);
     $('#voice-fill').addEventListener('click', function () {
       const draft = state.voiceDraft;
@@ -563,6 +741,7 @@
 
   async function boot() {
     bindEvents();
+    initializeRewardFeature();
     updateCategoryOptions('expense', '餐饮');
     render();
     try {

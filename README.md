@@ -25,6 +25,8 @@ node tests/storage.test.js
 
 - 首页收支、结余、预算与最近账单；点收支卡片可筛选账单。
 - 手动新增、查看、修改和二次确认删除账单。
+- 「发布笔记」使用本地 Canvas 生成产品介绍配图，调用官方 `postNote` 打开小红书发布页；不带入个人账单。接口成功表示用户已在发布页点击发布，不代表最终发布或审核通过，状态需在小红书查看。
+- 「支持作者」接入官方 `rewardAuthor` 赞赏流程；该平台能力目前为内测，仅在创服开通后启用入口开关，且只对客户端 9.53.3+ 显示。API 不返回赞赏金额或支付状态。
 - 检测 Web Speech API 的可选语音增强；识别结果必须手动检查确认。容器不支持或启动失败时，聚焦输入框并提示使用手机键盘语音输入或手动输入。
 - 月度收支、日支出趋势、分类统计和上月对比，均从用户数据计算。
 - 月预算、分类预算、存钱目标。
@@ -43,7 +45,11 @@ node tests/storage.test.js
 - `tests/`：核心与模拟容器 Storage 自检。
 - `docs/implementation-plan.md`：产品与技术实施计划、验收状态。
 - `dist/mvp/`：从项目源码整理的离线交付目录。
-- `artifacts/qian-qu-na-le-v1.0-ui-refresh.zip`：按 Skill 规则生成的当前 UI ZIP。
+- `artifacts/qian-qu-na-le-v1.0.4-reward-author.zip`：加入默认关闭的平台赞赏入口及客户端版本门控。
+
+### 开通平台赞赏
+
+当前 Builder Hub 文档将 `rewardAuthor` 标为内测能力。需先在创服平台确认当前小工具已开通赞赏，再把 `index.html` 根元素的 `data-xhs-reward-enabled="false"` 改为 `true` 并重新打包发布。在线文档未提供读取该发布配置的运行时 JS API，因此代码保留明确的发布期开关；未开通时保持隐藏。不得仅因为 API 方法存在就打开入口。
 
 ## 数据与隐私限制
 

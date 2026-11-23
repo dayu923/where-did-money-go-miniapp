@@ -83,6 +83,10 @@
             <form id="goal-form" class="goal-form"><label>目标名称<input name="name" maxlength="40" placeholder="旅行基金" required /></label><div class="form-pair"><label>目标金额（元）<input name="target" type="text" inputmode="decimal" placeholder="10000" required /></label><label>目标日期<input name="date" type="date" /></label></div><button class="secondary-button" type="submit">添加存钱目标</button></form>
             <div id="goals-list" class="goal-list"></div>
           </article>
+          <article class="settings-card"><div class="section-top"><div><h2>发布笔记</h2><p>生成产品介绍配图和文案，打开小红书发布页</p></div></div>
+            <button class="secondary-button publish-note-button" id="publish-note" type="button">发布笔记</button>
+            <p class="hint" id="publish-note-status" role="status">配图和文案只介绍工具功能，不包含你的账单。</p>
+          </article>
           <article class="settings-card"><div class="section-top"><div><h2>数据管理</h2><p id="storage-usage">数据仅保存在当前小工具本地</p></div></div>
             <div class="action-row"><button class="secondary-button" id="export-json" type="button">准备 JSON 备份</button><button class="secondary-button" id="export-csv" type="button">准备 CSV 账单</button></div>
             <label class="field-label" for="export-text">导出内容（可选择后手动复制）</label><textarea id="export-text" rows="5" readonly placeholder="选择一种导出格式后，内容会显示在这里"></textarea>
