@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#4037BD" />
+    <title>钱去哪里了？记下来就知道了。</title>
+    <link rel="stylesheet" href="./styles.css?v=9" />
+    <script src="./core.js" defer></script>
+    <script src="./storage.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <a class="brand" href="#home" data-page="home" aria-label="钱去哪里了首页">
+          <img class="brand-mark" src="./assets/brand/logo-mark.png" alt="" />
+          <span><b>钱去哪里了</b><small>今天的钱，去哪儿玩啦？</small></span>
+        </a>
+        <div class="header-month" aria-label="选择统计月份">
+          <button class="month-step" type="button" data-month-step="-1" aria-label="上个月">‹</button>
+          <span id="month-label">正在读取</span>
+          <button class="month-step" type="button" data-month-step="1" aria-label="下个月">›</button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <div class="app-status" id="app-status" role="status" aria-live="polite">正在读取本地账本…</div>
+
+        <section class="page active" id="page-home" aria-labelledby="home-title">
+          <div class="page-heading"><div><p class="eyebrow" id="today-label">把每一天记成小故事 <img class="inline-icon" src="./assets/icons/sparkles.svg" alt="" /></p><h1 id="home-title">今天的钱去哪儿玩啦？</h1></div><button class="primary-button desktop-add" type="button" data-open-entry>＋ 记一笔</button></div>
+          <div class="summary-grid">
+            <article class="summary-card expense-card" role="button" tabindex="0" data-open-bills="expense" aria-label="查看本月支出账单"><span class="eyebrow">这个月，慢慢花</span><strong id="home-expense">—</strong><small id="home-today">今日支出 —</small><span class="expense-caption">本月支出</span></article>
+            <article class="summary-card income-card" role="button" tabindex="0" data-open-bills="income" aria-label="查看本月收入账单"><span class="eyebrow">本月收入</span><strong id="home-income">—</strong><small id="home-income-count">—</small></article>
+            <article class="summary-card balance-card" role="button" tabindex="0" data-open-bills="all" aria-label="查看本月全部账单"><span class="eyebrow">本月结余</span><strong id="home-balance">—</strong><small>收入减去支出</small></article>
+          </div>
+          <article class="budget-card">
+            <div class="section-top"><div><h2>本月预算</h2><p id="home-budget-caption">设置预算，温柔地提醒自己</p></div><button class="text-button" type="button" data-page="mine">去设置</button></div>
+            <div class="budget-line"><span id="home-budget-bar"></span></div>
+            <div class="budget-foot"><span id="home-budget-spent">本月支出 —</span><b id="home-budget-remaining">预算未设置</b></div>
+          </article>
+          <div class="section-top list-heading"><div><h2>最近账单</h2><p>每一笔都清清楚楚</p></div><button class="text-button" type="button" data-page="record">查看全部 ›</button></div>
+          <div class="bill-list" id="home-bills"></div>
+          <div class="empty-card" id="home-empty" hidden><h2>鱼鱼等你记第一笔！</h2><p>不用注册，也不用绑定账户。今天的快乐开销，先记下来～</p><button class="primary-button" type="button" data-open-entry>记下第一笔</button></div>
+        </section>
+
+        <section class="page" id="page-record" aria-labelledby="record-title">
+          <div class="page-heading"><div><p class="eyebrow">写下今天的收支</p><h1 id="record-title">记账</h1></div><button class="primary-button desktop-add" type="button" data-open-entry>＋ 手动记账</button></div>
+          <article class="voice-card">
+            <div class="section-top"><div><h2>语音记账</h2><p>说出金额和用途，确认后才会保存</p></div><span class="voice-icon"><img src="./assets/icons/mic.svg" alt="" /></span></div>
+            <button class="voice-button" id="voice-start" type="button">开始语音识别</button>
+            <p class="hint" id="voice-hint">如果当前容器不支持识别，可用手机输入法语音转文字，再粘贴到下面。</p>
+            <label class="field-label" for="voice-text">识别或输入内容</label>
+            <textarea id="voice-text" rows="2" maxlength="300" placeholder="例如：今天中午吃饭花了28元"></textarea>
+            <button class="secondary-button" id="voice-parse" type="button">解析并确认</button>
+            <div class="voice-result" id="voice-result" hidden>
+              <p id="voice-result-status" role="status"></p>
+              <button class="primary-button" id="voice-fill" type="button">检查并保存这笔</button>
+              <button class="text-button" id="voice-cancel" type="button">取消，不保存</button>
+            </div>
+          </article>
+          <div class="section-top list-heading"><div><h2>本月账单</h2><p>可点开查看、修改或删除</p></div><div class="filter-row"><button type="button" class="filter-chip active" data-filter="all">全部</button><button type="button" class="filter-chip" data-filter="expense">支出</button><button type="button" class="filter-chip" data-filter="income">收入</button></div></div>
+          <div class="bill-list" id="all-bills"></div>
+          <div class="empty-card compact-empty" id="record-empty" hidden><h2>这个月还没有账单</h2><p>记下第一笔后，明细会显示在这里。</p></div>
+        </section>
+
+        <section class="page" id="page-stats" aria-labelledby="stats-title">
+          <div class="page-heading"><div><p class="eyebrow">看见每一笔的去向</p><h1 id="stats-title">消费统计</h1></div></div>
+          <div class="summary-grid stats-summary"><article><span class="eyebrow">收入</span><strong id="stats-income">—</strong></article><article><span class="eyebrow">支出</span><strong id="stats-expense">—</strong></article><article><span class="eyebrow">结余</span><strong id="stats-balance">—</strong></article></div>
+          <article class="chart-card"><div class="section-top"><div><h2>每日支出</h2><p>只统计所选月份的真实账单</p></div></div><div class="daily-chart" id="daily-chart"></div><div class="chart-axis"><span>1日</span><span>月中</span><span>月末</span></div></article>
+          <div class="chart-columns"><article class="chart-card"><div class="section-top"><div><h2>支出分类</h2><p>钱主要花在哪里</p></div></div><div id="expense-categories"></div></article><article class="chart-card"><div class="section-top"><div><h2>收入分类</h2><p>这个月的收入来源</p></div></div><div id="income-categories"></div></article></div>
+          <article class="chart-card"><div class="section-top"><div><h2>月份对比</h2><p>与上个月的收支变化</p></div></div><div class="compare-row"><span>上月收入</span><b id="previous-income">—</b></div><div class="compare-row"><span>上月支出</span><b id="previous-expense">—</b></div><p class="monthly-summary" id="monthly-summary">开始记账后，这里会生成真实的月度小结。</p></article>
+        </section>
+
+        <section class="page" id="page-mine" aria-labelledby="mine-title">
+          <div class="page-heading"><div><p class="eyebrow">给生活留一点余地</p><h1 id="mine-title">我的小计划</h1></div></div>
+          <article class="settings-card"><div class="section-top"><div><h2>月度预算</h2><p>支出预算不包含收入</p></div></div>
+            <form id="budget-form" class="inline-form"><label>本月总预算（元）<input name="total" type="text" inputmode="decimal" placeholder="例如 5000" /></label><button class="secondary-button" type="submit">保存预算</button></form>
+            <form id="category-budget-form" class="inline-form category-budget-form"><label>分类<select name="category" id="budget-category"></select></label><label>分类预算（元）<input name="amount" type="text" inputmode="decimal" placeholder="例如 1500" /></label><button class="secondary-button" type="submit">保存分类预算</button></form>
+            <div id="category-budget-list" class="simple-list"></div>
+          </article>
+          <article class="settings-card"><div class="section-top"><div><h2>存钱目标</h2><p>给喜欢的生活留一点方向</p></div></div>
+            <form id="goal-form" class="goal-form"><label>目标名称<input name="name" maxlength="40" placeholder="旅行基金" required /></label><div class="form-pair"><label>目标金额（元）<input name="target" type="text" inputmode="decimal" placeholder="10000" required /></label><label>目标日期<input name="date" type="date" /></label></div><button class="secondary-button" type="submit">添加存钱目标</button></form>
+            <div id="goals-list" class="goal-list"></div>
+          </article>
+          <article class="settings-card"><div class="section-top"><div><h2>数据管理</h2><p id="storage-usage">数据仅保存在当前小工具本地</p></div></div>
+            <div class="action-row"><button class="secondary-button" id="export-json" type="button">准备 JSON 备份</button><button class="secondary-button" id="export-csv" type="button">准备 CSV 账单</button></div>
+            <label class="field-label" for="export-text">导出内容（可选择后手动复制）</label><textarea id="export-text" rows="5" readonly placeholder="选择一种导出格式后，内容会显示在这里"></textarea>
+            <p class="hint">小工具容器不支持网页下载文件。请长按选中文本并复制到你自己的安全位置；定期备份，卸载或清理客户端可能导致本地数据丢失。</p>
+            <label class="field-label" for="restore-text">恢复 JSON 备份</label><textarea id="restore-text" rows="4" placeholder="将之前复制的完整 JSON 备份粘贴到这里"></textarea>
+            <label class="check-row"><input id="backup-confirm" type="checkbox" />我已先导出并备份当前账本</label>
+            <button class="secondary-button" id="restore-json" type="button">校验并恢复备份</button>
+            <button class="danger-button" id="clear-ledger" type="button">清空全部账本</button>
+          </article>
+          <details class="settings-card"><summary>隐私说明</summary><p>账单保存在小红书小工具本地存储中，不上传账单，不读取银行卡或支付账户。卸载、清理数据或客户端环境变化可能导致数据丢失，建议定期自行备份。</p></details>
+          <details class="settings-card"><summary>关于「钱去哪里了」</summary><p>钱去哪里了？记下来就知道了。一个帮助你看清消费、管理预算、慢慢存钱的生活记账工具。</p></details>
+        </section>
+      </main>
+    </div>
+
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="nav-item active" type="button" data-page="home"><img class="nav-icon" src="./assets/icons/house.svg" alt="" />首页</button>
+      <button class="nav-item" type="button" data-page="record"><img class="nav-icon" src="./assets/icons/notebook-pen.svg" alt="" />记账</button>
+      <button class="nav-item" type="button" data-page="stats"><img class="nav-icon" src="./assets/icons/chart-no-axes-column-increasing.svg" alt="" />统计</button>
+      <button class="nav-item" type="button" data-page="mine"><img class="nav-icon" src="./assets/icons/sprout.svg" alt="" />我的</button>
+    </nav>
+    <button class="mobile-add" type="button" data-open-entry aria-label="快速记一笔"><span aria-hidden="true">＋</span><b>记一笔</b></button>
+
+    <dialog id="entry-dialog" class="app-dialog">
+      <form id="entry-form">
+        <div class="dialog-heading"><div><p class="eyebrow">新增一条生活记录</p><h2 id="entry-title">记一笔</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="关闭">×</button></div>
+        <div class="type-switch"><button type="button" class="active" data-entry-type="expense">支出</button><button type="button" data-entry-type="income">收入</button></div>
+        <input name="type" type="hidden" value="expense" />
+        <label class="amount-field"><span>金额（元）</span><span class="amount-line">¥<input name="amount" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" required /></span></label>
+        <label class="input-row"><span>分类</span><select name="category" id="entry-category" required></select></label>
+        <label class="input-row"><span>日期</span><input name="date" type="date" required /></label>
+        <label class="input-row note-row"><span>备注</span><input name="note" maxlength="120" placeholder="写点什么（选填）" /></label>
+        <p class="form-error" id="entry-error" role="alert"></p>
+        <button class="primary-button save-button" id="entry-save" type="submit">保存账单</button>
+      </form>
+    </dialog>
+
+    <dialog id="bill-dialog" class="app-dialog">
+      <div class="dialog-heading"><div><p class="eyebrow">一笔账单</p><h2>账单详情</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="关闭">×</button></div>
+      <div id="bill-detail"></div>
+      <div class="action-row"><button class="secondary-button" id="bill-edit" type="button">修改账单</button><button class="danger-button" id="bill-delete" type="button">删除账单</button></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

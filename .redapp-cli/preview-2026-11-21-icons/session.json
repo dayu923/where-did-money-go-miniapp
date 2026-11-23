@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "projectRoot": "/Users/dayu/Desktop/Big-Fish-Accounting",
+  "cli": {
+    "entry": "/private/tmp/redapp-icons-prefix/bin/redapp",
+    "version": "1.0.6",
+    "tag": "latest",
+    "verifiedAt": "2026-11-21"
+  },
+  "context": {
+    "env": "prod",
+    "apiBase": "https://edith.xiaohongshu.com",
+    "source": "thirdAgent",
+    "account": "of852390176cf101ead006c0c3f8e"
+  },
+  "intent": {
+    "target": "icons-preview",
+    "appId": "6b0105ad3894b3001504aeb4",
+    "version": null,
+    "authorizedActions": ["upload", "preview"],
+    "authorizationSummary": "User requested lightweight local icons; previous request to generate a scan preview authorizes uploading this updated package and generating a preview only. Do not submit."
+  },
+  "files": [
+    {
+      "role": "pkg",
+      "path": "/Users/dayu/Desktop/Big-Fish-Accounting/artifacts/qian-qu-na-le-v1.0-lucide-icons.zip",
+      "sha256": "d735a3541bb036e6bb79cc6486292c9922801b9be900086645d47371ac9cda0b",
+      "md5": "56d2bf7e746abc579b589f12c9a263f0",
+      "fileId": null,
+      "status": "unknown",
+      "uploadedAt": null
+    }
+  ],
+  "previewReview": {
+    "status": "pending",
+    "pkgSha256": "d735a3541bb036e6bb79cc6486292c9922801b9be900086645d47371ac9cda0b",
+    "submitPayloadSha256": null,
+    "previewUrl": null,
+    "qrCodePath": null,
+    "confirmedAt": null,
+    "confirmationEvidence": null
+  },
+  "operations": [
+    {
+      "command": "redapp upload --file artifacts/qian-qu-na-le-v1.0-lucide-icons.zip --type pkg --dry-run --agent",
+      "planHash": "2b02c53c2532d84493063a30872c881966e4c2c574775ff4f38ce59f9bd99844",
+      "status": "succeeded",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21"
+    },
+    {
+      "command": "redapp upload --file artifacts/qian-qu-na-le-v1.0-lucide-icons.zip --type pkg --confirm 2b02c53c2532d84493063a30872c881966e4c2c574775ff4f38ce59f9bd99844 --agent",
+      "planHash": "2b02c53c2532d84493063a30872c881966e4c2c574775ff4f38ce59f9bd99844",
+      "status": "unknown",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21",
+      "result": { "status": "error", "code": "UNEXPECTED_ERROR", "message": "fetch failed" }
+    }
+  ],
+  "lastResult": { "status": "unknown", "command": "upload", "code": "UNEXPECTED_ERROR", "message": "fetch failed" },
+  "updatedAt": "2026-11-21"
+}

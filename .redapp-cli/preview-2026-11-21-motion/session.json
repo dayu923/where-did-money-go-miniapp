@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "projectRoot": "/Users/dayu/Desktop/Big-Fish-Accounting",
+  "cli": {
+    "entry": "/private/tmp/redapp-preview-prefix/bin/redapp",
+    "version": "1.0.6",
+    "tag": "latest",
+    "verifiedAt": "2026-11-21"
+  },
+  "context": {
+    "env": "prod",
+    "apiBase": "https://edith.xiaohongshu.com",
+    "source": "thirdAgent",
+    "account": "of852390176cf101ead006c0c3f8e"
+  },
+  "intent": {
+    "target": "motion-ui-preview",
+    "appId": null,
+    "version": null,
+    "authorizedActions": ["upload", "preview"],
+    "authorizationSummary": "User requested lightweight motion in page transitions, dialogs, and tap interactions. Upload and preview the updated package only; do not submit."
+  },
+  "files": [
+    {
+      "role": "pkg",
+      "path": "/Users/dayu/Desktop/Big-Fish-Accounting/artifacts/qian-qu-na-le-v1.0-ui-refresh.zip",
+      "sha256": "d516c70ad51fa7552c0b6f126919d22ad983734d9fd9e0f50ec91ef0ea8559ed",
+      "md5": "3d1bed5eaf9470e430190e13fc43625c",
+      "fileId": "red_app/RQMSiOkeZcIXwUwswp6FVVwEcxv-Leh8kd2c2Eakxz4a8h8.zip",
+      "status": "succeeded",
+      "uploadedAt": "2026-11-21"
+    }
+  ],
+  "previewReview": {
+    "status": "awaiting_user",
+    "pkgSha256": "d516c70ad51fa7552c0b6f126919d22ad983734d9fd9e0f50ec91ef0ea8559ed",
+    "submitPayloadSha256": null,
+    "previewUrl": "xhsdiscover://miniTool/6b0105ad3894b3001504aeb4_develop?xhsMpScreenMode=full",
+    "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-motion/preview-qr.png",
+    "confirmedAt": null,
+    "confirmationEvidence": null
+  },
+  "operations": [
+    {
+      "command": "redapp upload --file <ZIP> --type pkg --dry-run --agent",
+      "planHash": "b76bdf94e3931660c71080e211cc344879b3b49f9afc9437a4e35fec6be91fed",
+      "status": "succeeded",
+      "finishedAt": "2026-11-21"
+    },
+    {
+      "command": "redapp upload --file <ZIP> --type pkg --confirm <PLAN_HASH> --agent",
+      "planHash": "b76bdf94e3931660c71080e211cc344879b3b49f9afc9437a4e35fec6be91fed",
+      "status": "succeeded",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21",
+      "result": {
+        "fileId": "red_app/RQMSiOkeZcIXwUwswp6FVVwEcxv-Leh8kd2c2Eakxz4a8h8.zip",
+        "md5": "3d1bed5eaf9470e430190e13fc43625c",
+        "size": 84305
+      }
+    },
+    {
+      "command": "redapp preview --source thirdAgent --file <PREVIEW_JSON> --dry-run --agent",
+      "planHash": "762094a8d123cef3fca470b922fe22ddfa5ef514f13e6fc07b70bd8d653897b2",
+      "status": "succeeded",
+      "finishedAt": "2026-11-21"
+    },
+    {
+      "command": "redapp preview --source thirdAgent --file <PREVIEW_JSON> --confirm <PLAN_HASH> --qr-out <QR_PATH> --agent",
+      "planHash": "762094a8d123cef3fca470b922fe22ddfa5ef514f13e6fc07b70bd8d653897b2",
+      "status": "succeeded",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21",
+      "result": {
+        "appId": "6b0105ad3894b3001504aeb4",
+        "previewUrl": "xhsdiscover://miniTool/6b0105ad3894b3001504aeb4_develop?xhsMpScreenMode=full",
+        "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-motion/preview-qr.png"
+      }
+    }
+  ],
+  "lastResult": {
+    "status": "ok",
+    "command": "preview",
+    "appId": "6b0105ad3894b3001504aeb4",
+    "previewUrl": "xhsdiscover://miniTool/6b0105ad3894b3001504aeb4_develop?xhsMpScreenMode=full",
+    "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-motion/preview-qr.png"
+  },
+  "updatedAt": "2026-11-21"
+}

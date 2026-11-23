@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "projectRoot": "/Users/dayu/Desktop/Big-Fish-Accounting",
+  "cli": {
+    "entry": "/private/tmp/redapp-preview-prefix/bin/redapp",
+    "version": "1.0.6",
+    "tag": "latest",
+    "verifiedAt": "2026-11-21"
+  },
+  "context": {
+    "env": "prod",
+    "apiBase": "https://edith.xiaohongshu.com",
+    "source": "thirdAgent",
+    "account": "of852390176cf101ead006c0c3f8e"
+  },
+  "intent": {
+    "target": "safe-area-ui-preview",
+    "appId": null,
+    "version": null,
+    "authorizedActions": ["upload", "preview"],
+    "authorizationSummary": "User reported the iPhone status bar overlaps the header; user asked to restart QR preview. Upload and preview the safe-area fix only; do not submit."
+  },
+  "files": [
+    {
+      "role": "pkg",
+      "path": "/Users/dayu/Desktop/Big-Fish-Accounting/artifacts/qian-qu-na-le-v1.0-ui-refresh.zip",
+      "sha256": "a966de35dc2803e7f5d635f683bd7808f29df4cf555b51f275e7b7bd072ae377",
+      "md5": "526f22c824794c734143668949b10f0e",
+      "fileId": "red_app/gF-NKe8pnAPFRSEveMClVB3-vuYM8TW4I2TB6A52QxWU904.zip",
+      "status": "succeeded",
+      "uploadedAt": "2026-11-21"
+    }
+  ],
+  "previewReview": {
+    "status": "awaiting_user",
+    "pkgSha256": "a966de35dc2803e7f5d635f683bd7808f29df4cf555b51f275e7b7bd072ae377",
+    "submitPayloadSha256": null,
+    "previewUrl": "xhsdiscover://miniTool/6b00f84753ca3e00150c08f4_develop?xhsMpScreenMode=full",
+    "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-safe-area/preview-qr.png",
+    "confirmedAt": null,
+    "confirmationEvidence": null
+  },
+  "operations": [
+    {
+      "command": "redapp upload --file <ZIP> --type pkg --dry-run --agent",
+      "planHash": "f31a5ed0a89e12f970ae3b98d2dba8ae797351f1fe442b7a4434bb5271fbf05b",
+      "status": "succeeded",
+      "finishedAt": "2026-11-21"
+    },
+    {
+      "command": "redapp upload --file <ZIP> --type pkg --confirm <PLAN_HASH> --agent",
+      "planHash": "f31a5ed0a89e12f970ae3b98d2dba8ae797351f1fe442b7a4434bb5271fbf05b",
+      "status": "succeeded",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21",
+      "result": {
+        "fileId": "red_app/gF-NKe8pnAPFRSEveMClVB3-vuYM8TW4I2TB6A52QxWU904.zip",
+        "md5": "526f22c824794c734143668949b10f0e",
+        "size": 83985
+      }
+    },
+    {
+      "command": "redapp preview --source thirdAgent --file <PREVIEW_JSON> --dry-run --agent",
+      "planHash": "5577d718854b7935978ab37244339b7b70fa51baa76ba50e26f681f572ffc56d",
+      "status": "succeeded",
+      "finishedAt": "2026-11-21"
+    },
+    {
+      "command": "redapp preview --source thirdAgent --file <PREVIEW_JSON> --confirm <PLAN_HASH> --qr-out <QR_PATH> --agent",
+      "planHash": "5577d718854b7935978ab37244339b7b70fa51baa76ba50e26f681f572ffc56d",
+      "status": "succeeded",
+      "startedAt": "2026-11-21",
+      "finishedAt": "2026-11-21",
+      "result": {
+        "appId": "6b00f84753ca3e00150c08f4",
+        "previewUrl": "xhsdiscover://miniTool/6b00f84753ca3e00150c08f4_develop?xhsMpScreenMode=full",
+        "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-safe-area/preview-qr.png"
+      }
+    }
+  ],
+  "lastResult": {
+    "status": "ok",
+    "command": "preview",
+    "appId": "6b00f84753ca3e00150c08f4",
+    "previewUrl": "xhsdiscover://miniTool/6b00f84753ca3e00150c08f4_develop?xhsMpScreenMode=full",
+    "qrCodePath": "/Users/dayu/Desktop/Big-Fish-Accounting/.redapp-cli/preview-2026-11-21-safe-area/preview-qr.png"
+  },
+  "updatedAt": "2026-11-21"
+}
